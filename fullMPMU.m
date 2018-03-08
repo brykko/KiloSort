@@ -61,8 +61,8 @@ end
 clear wtw0 utu0 U0
 %
 clear nspikes2
-st3 = [];
-rez.st3 = [];
+st3 = zeros(ops.nInitSt3, 4);
+nst3 = 0;
 
 if ops.verbose
    fprintf('Time %3.0fs. Running the final template matching pass...\n', toc) 
@@ -190,17 +190,23 @@ for ibatch = 1:Nbatch
         %     nspikes2(1:size(W,2)+1, ibatch) = histc(id, 0:1:size(W,2));
         STT = cat(2, ops.nt0min + double(st) +(NT-ops.ntbuff)*(ibatch-1), ...
             double(id)+1, double(x), ibatch*ones(numel(x),1));
-        st3             = cat(1, st3, STT);
+        nSTT = size(STT, 1);
+        st3(nst3+1 : nst3+nSTT, :) = STT;
+        nst3 = nst3 + nSTT;
     end
     if rem(ibatch,100)==1
 %         nsort = sort(sum(nspikes2,2), 'descend');
         fprintf(repmat('\b', 1, numel(msg)));
         msg             = sprintf('Time %2.2f, batch %d/%d,  NTOT %d\n', ...
-            toc, ibatch,Nbatch, size(st3,1));        
+            toc, ibatch, Nbatch, nst3);        
         fprintf(msg);
         
     end
 end
+
+% Strip unused rows from the st3 matrix
+st3 = st3(1:nst3, :);
+
 %%
 [~, isort]      = sort(st3(:,1), 'ascend');
 st3             = st3(isort,:);

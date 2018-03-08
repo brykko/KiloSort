@@ -26,15 +26,16 @@ ops.criterionNoiseChannels = 0.2; % fraction of "noise" templates allowed to spa
 % ops.chanMap = 1:ops.Nchan; % treated as linear probe if a chanMap file		
 		
 % other options for controlling the model and optimization		
-ops.Nrank               = 3;    % matrix rank of spike template model (3)		
-ops.nfullpasses         = 6;    % number of complete passes through data during optimization (6)		
-ops.maxFR               = 20000;  % maximum number of spikes to extract per batch (20000)		
+ops.Nrank               = 3;     % matrix rank of spike template model (3)		
+ops.nfullpasses         = 6;     % number of complete passes through data during optimization (6)		
+ops.maxFR               = 20000; % maximum number of spikes to extract per batch (20000)		
 ops.fshigh              = 300;   % frequency for high pass filtering		
-% ops.fslow             = 2000;   % frequency for low pass filtering (optional)
+% ops.fslow             = 2000;  % frequency for low pass filtering (optional)
 ops.ntbuff              = 64;    % samples of symmetrical buffer for whitening and spike detection		
 ops.scaleproc           = 200;   % int16 scaling of whitened data		
 ops.NT                  = 32*1024+ ops.ntbuff;% this is the batch size (try decreasing if out of memory) 		
 % for GPU should be multiple of 32 + ntbuff		
+ops.nInitSt3            = 1e9;   % number of spikes to preallocate in the st3 matrix
 		
 % the following options can improve/deteriorate results. 		
 % when multiple values are provided for an option, the first two are beginning and ending anneal values, 		
